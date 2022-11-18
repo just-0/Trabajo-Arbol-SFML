@@ -1,12 +1,17 @@
-#include<iostream>
 #include"include.h"
 using namespace std;
 
 int main()
 {
-    char a[] = "3+((5+9)*2)";
+    string a = "3+((5+9)*2)+(3*2)+(5*6*7)";
     
-    int tamanho = sizeof(a)-1;
+    cout<<searchsum(a)<<endl;
+    cout<<"si"<<endl;
+    //cout<<ParenFunc(a)<<endl;
+
+    
+    /*
+    int tamanho = a.size();
     cout<<tamanho<<endl;
 
     int parentesis = 0;
@@ -22,4 +27,5 @@ int main()
         cout<<parentesis<<"\t"<<a[i]<<endl;
     }
     cout<<"->"<<sumas<<"\t"<<productos<<endl;
-}
+    */
+}   
