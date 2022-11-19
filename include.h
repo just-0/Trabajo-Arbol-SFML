@@ -1,5 +1,7 @@
 #include<iostream>
 using namespace std;
+
+//----------------------------------------------Estructura Arbol----------------------
 struct ArNode
 {
     char value;
@@ -10,76 +12,98 @@ struct ArNode
     }
 };
 
-
 struct ArTree
 {
     ArNode* root;
+
+    ArTree()
+    {
+        root = 0;
+    }
+    void InOrder(ArNode* n)
+    {
+        if (!n) return;
+
+        InOrder(n->nodes[0]);
+        cout << n->value << "-";
+        InOrder(n->nodes[1]);
+    }
+    void Print()
+    {   
+        InOrder(root);
+        
+        cout << endl;
+    }   
 };
 
-
-
-void stackear(char *a, int tamanho, int parentesis, int sumas, int productos)
-{
-    if(parentesis == 0 && sumas ==  0 && productos == 0) ;
-}
-
-int searchsum(string a)
+//---------------------------------------------Rellenar Arbol-----------------------------
+int SearchOp(string a)
 {
     int tamanho = a.size();
     int parentesis = 0;
-    int i = tamanho;
-    for(; i > -1; i--)
+    int i = 0;
+    bool sumaresta = false;
+    int retornar = -1;
+    for(; i <tamanho; i++)
     {
-        if(a[i] == 41) parentesis++;
-        else if(a[i] == 40) parentesis--;
-        if(parentesis == 0 && a[i] == 43 ){return i;}
+        if(a[i] == '(') parentesis++;
+        else if(a[i] == ')') parentesis--;
+        if(parentesis == 0 && (a[i] == 43 || a[i] == 45) )
+        {
+            retornar = i;
+            sumaresta = true;
+        }
+        if(parentesis == 0 && sumaresta == false && (a[i] == 42 || a[i] == 47)) 
+        {
+            retornar = i;
+            
+        }
         //cout<<a[i]<<endl;
     }
-    return -1;
+    return retornar;
 }
 
-void a1(string a)
+
+string AsingLeft(string a, int p)
 {
-    string left;
-    string right;
+    string returner;
+    int tamanho = p;
+    int i = 0;
+    if(a[0] == '(' && a[tamanho-1] == ')'){i++;tamanho--;}
+    for(;i<tamanho;i++)
+    {
+        returner.push_back(a[i]);
+    }
+    
+    return returner;
+}
+string AsingRight(string a, int p)
+{
+    string returner;
+    int tamanho = a.size();
+    int i = p+1;
+    if(a[p+1] == '(' && a[tamanho-1] == ')'){i++;tamanho--;}
+    for(;i<tamanho;i++)
+    {
+        returner.push_back(a[i]);
+    }
+    
+    return returner;
+}
+string a1(string a)
+{
     int tamanho = a.size();
     if(tamanho == 1)
     {
         cout<<a<<endl;
-        return;
+        return a;
     }
+    int i = SearchOp(a);
+    string left = AsingLeft(a,i);
+    string right = AsingRight(a,i);
 
-
-
-    a1(right);
-    cout<<a<<endl;
+    cout<<a[i]<<endl;
     a1(left);
-}
-
-string ParenFunc(string a)
-{
-    int parentesis = 0;
-    int tamanho = a.size();
-    string b;
-    for(int i = 0; i < tamanho; i++)
-    {
-        if(parentesis>0 )b.push_back(a[i]);
-        if(a[i] == 40) {parentesis++;}
-        else if(a[i] == 41) parentesis--;
-        //cout<<parentesis<<"\t"<<a[i]<<endl;
-        
-    }
-    b.pop_back();
-    return b;
-}
-
-void test(string a)
-{
-    int tamanho = a.size();
-
-    for(int i = tamanho; i > -1; i--)
-    {
-        cout<<a[i]<<endl;
-    }
-
+    a1(right);
+    return "xd"; 
 }
