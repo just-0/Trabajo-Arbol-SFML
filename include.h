@@ -1,4 +1,6 @@
 #include<iostream>
+#include<queue>
+//include "IncludeSFML.h"
 using namespace std;
 
 //----------------------------------------------Estructura Arbol----------------------
@@ -28,9 +30,52 @@ struct ArTree
         cout << n->value << "-";
         InOrder(n->nodes[1]);
     }
+    void PreOrder(ArNode* n)
+    {
+        if (!n) return;
+        cout << n->value << "-";
+        PreOrder(n->nodes[0]);
+        PreOrder(n->nodes[1]);
+    }
+    void PostOrder(ArNode* n)
+    {
+        if (!n) return;
+
+        PreOrder(n->nodes[0]);
+        PreOrder(n->nodes[1]);
+        cout << n->value << "-";
+    }
+    void Profundidad(ArNode*n)
+    {
+        std::queue<ArNode*> q;
+        q.push(n);
+        
+
+        while(q.size()>0)
+        {
+            if(q.front()->nodes[0])q.push(q.front()->nodes[0]);
+            if(q.front()->nodes[1])q.push(q.front()->nodes[1]);
+            cout<<q.front()->value;
+            q.pop();
+        }
+    }
+    void Prof(ArNode*n)
+    {
+        std::queue<ArNode*> q;
+        q.push(n);
+        
+
+        while(q.size()>0)
+        {
+            if(q.front()->nodes[0])q.push(q.front()->nodes[0]);
+            if(q.front()->nodes[1])q.push(q.front()->nodes[1]);
+            cout<<q.front()->value;
+            q.pop();
+        }
+    }
     void Print()
     {   
-        InOrder(root);
+        Profundidad(root);
         
         cout << endl;
     }   
@@ -90,20 +135,34 @@ string AsingRight(string a, int p)
     
     return returner;
 }
-string a1(string a)
+//2+3
+string a1(string a,ArNode *&root)
 {
     int tamanho = a.size();
     if(tamanho == 1)
     {
-        cout<<a<<endl;
+        root = new ArNode(a[0]);
         return a;
     }
     int i = SearchOp(a);
     string left = AsingLeft(a,i);
     string right = AsingRight(a,i);
 
-    cout<<a[i]<<endl;
-    a1(left);
-    a1(right);
+    root = new ArNode(a[i]);
+    a1(left,root->nodes[0]);
+    a1(right,root->nodes[1]);
     return "xd"; 
 }
+
+//--------------------------------------SFML------------------------------------------
+/*sfml
+#!/bin/bash
+
+clear
+g++ -c $1.cpp
+g++ -c $1.cpp -I/usr/include/SFML/include
+g++ -Wall $1.o -o sfml-app -L/usr/include/SFML/lib -lsfml-graphics -lsfml-window -lsfml-system
+./sfml-app
+
+*/
+
