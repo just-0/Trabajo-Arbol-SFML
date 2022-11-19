@@ -1,28 +1,27 @@
-#include<iostream>
 #include"include.h"
-using namespace std;
 
 int main()
 {
-    string t1;    
-    string a = "3+((5+9)*2)";
-    
-    int tamanho = a.size();
-    cout<<tamanho<<endl;
+    //3+((5+9)*2)*3
+    string entrada= "3+((5+9)*2)";
 
-    int parentesis = 0;
-    int sumas = 0;
-    int productos = 0;
+    ArTree T1;
+    /*T1.root = new ArNode('*');
+    T1.root->nodes[0] = new ArNode('1');
+    T1.root->nodes[1] = new ArNode('2');
+    T1.Print();*/
+    a1(entrada,T1.root);
+    printTree(T1.root, nullptr, false);
+
+    T1.PostOrder(T1.root);
+    cout<<endl;
+
+    //cout<<char(195)<<endl;
+
+    //cout<<SearchOp(entrada)<<endl;
+    //cout<<entrada[7]<<endl;
     
-    for(int i = 0; i < tamanho; i++)
-    {
-        if(a[i] == 40) parentesis++;
-        else if(a[i] == 41)
-         parentesis--;
-        if(parentesis == 0 && a[i] ==  43) sumas++;
-        if(parentesis == 0 && a[i] ==  42) productos++;
-        cout<<parentesis<<"\t"<<a[i]<<endl;
-    }
-    cout<<"->"<<sumas<<"\t"<<productos<<endl;
+   
+    //test1();
     
-}
+}   
