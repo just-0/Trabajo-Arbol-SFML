@@ -16,7 +16,7 @@ struct ArTree
 
 
 
-void stackear(char *a, int tamanho, int parentesis, int sumas, int productos)
+void stackear(string a)
 {
-    if(parentesis == 0 && sumas ==  0 && productos == 0) 
+    if(parentesis == 0 && sumas ==  0 && productos == 0) ;
 }
