@@ -1,16 +1,49 @@
 #include<iostream>
 #include<queue>
-//include "IncludeSFML.h"
+#include <SFML/Graphics.hpp>
 using namespace std;
+
 
 //----------------------------------------------Estructura Arbol----------------------
 struct ArNode
 {
+    int x,y;
     char value;
     ArNode* nodes[2];
+    sf::CircleShape *shape;
+    sf::Text text;
+    sf::Font font;
+
+    //Modulo, anchura
+    sf::RectangleShape *LineLeft;
+    //angulo respecto a -x
+     sf::RectangleShape *LineRight;
+   
+
+    
     ArNode(char _v)
     {
+        x = 200; y =50;
         value = _v; nodes[0] = nodes[1] = 0;
+
+        shape = new sf::CircleShape(30.f);
+        shape->setFillColor(sf::Color::Green);
+        shape->setPosition(x,y);
+
+        font.loadFromFile("Bubble Mint.otf");
+
+        text.setFont(font); 
+        text.setString(_v);
+        text.setCharacterSize(80);
+        text.setFillColor(sf::Color::Blue);
+        text.setPosition(x+18,y-23);
+        
+        LineLeft = new sf::RectangleShape(sf::Vector2f(70.f, 5.f));
+        LineRight = new sf::RectangleShape(sf::Vector2f(70.f, 5.f));
+        LineRight->rotate(45.f);
+        LineLeft->rotate(45+90.f);
+        LineRight->setPosition(x+33,y+58);
+        LineLeft->setPosition(x+33,y+58);
     }
 };
 
@@ -155,6 +188,59 @@ string a1(string a,ArNode *&root)
 }
 
 //--------------------------------------SFML------------------------------------------
+
+struct DrawTree
+{
+    ArTree Tree;
+
+    DrawTree(ArTree Tree)
+    {
+        this->Tree = Tree;
+    }
+    void Draw()
+    {
+
+
+
+    
+        sf::RenderWindow window(sf::VideoMode(500, 500), "SFML works!");
+        window.setFramerateLimit(60);
+
+
+        while (window.isOpen())
+        {
+            
+        
+            sf::Event event;
+            while (window.pollEvent(event))
+            {
+                if (event.type == sf::Event::Closed)
+                    window.close();
+            }
+
+            window.clear();
+            window.draw(*(Tree.root->shape));
+            window.draw((Tree.root->text));
+            window.draw(*(Tree.root->LineLeft));
+            window.draw(*(Tree.root->LineRight));
+            window.display();
+            
+        }
+    } 
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*sfml
 #!/bin/bash
 

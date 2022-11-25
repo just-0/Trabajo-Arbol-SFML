@@ -14,6 +14,9 @@ int main()
     //cout<<SearchOp(entrada)<<endl;
     //cout<<entrada[7]<<endl;
     
+    DrawTree D1(T1);
+
+    D1.Draw();
    
     //test1();
     
