@@ -140,6 +140,11 @@ struct ArTree
             
         }
     }
+    int GetHeight(ArNode *node) 
+    {
+        if (node == NULL) return 0;
+        return 1 + max(GetHeight(node->nodes[0]), GetHeight(node->nodes[1]));
+    }
 };
 
 //---------------------------------------------Rellenar Arbol-----------------------------
