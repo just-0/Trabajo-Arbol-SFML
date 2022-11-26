@@ -10,49 +10,56 @@ struct ArNode
     int x,y;
     char value;
     ArNode* nodes[2];
-    sf::CircleShape *shape;
+    sf::CircleShape shape;
     sf::Text text;
     sf::Font font;
 
     //Modulo, anchura
-    sf::RectangleShape *LineLeft;
+    sf::RectangleShape LineLeft;
     //angulo respecto a -x
-     sf::RectangleShape *LineRight;
+     sf::RectangleShape LineRight;
    
 
     
-    ArNode(char _v)
+    ArNode(char _v, int x, int y): shape(30.f), LineLeft(sf::Vector2f(70.f, 5.f)), LineRight(sf::Vector2f(70.f, 5.f))
     {
-        x = 200; y =50;
+        //x = 200; y = 50
+        this->x = x; this->y = y;
         value = _v; nodes[0] = nodes[1] = 0;
 
-        shape = new sf::CircleShape(30.f);
-        shape->setFillColor(sf::Color::Green);
-        shape->setPosition(x,y);
+       
+        shape.setFillColor(sf::Color::Green);
+        shape.setPosition(x,y);
 
         font.loadFromFile("Bubble Mint.otf");
 
         text.setFont(font); 
         text.setString(_v);
-        text.setCharacterSize(80);
+        text.setCharacterSize(50);
         text.setFillColor(sf::Color::Blue);
-        text.setPosition(x+18,y-23);
-        
-        LineLeft = new sf::RectangleShape(sf::Vector2f(70.f, 5.f));
-        LineRight = new sf::RectangleShape(sf::Vector2f(70.f, 5.f));
-        LineRight->rotate(45.f);
-        LineLeft->rotate(45+90.f);
-        LineRight->setPosition(x+33,y+58);
-        LineLeft->setPosition(x+33,y+58);
+        text.setPosition(x+18,y-5);
+       
+        LineRight.rotate(45.f);
+        LineLeft.rotate(45+90.f);
+        LineRight.setPosition(x+33,y+58);
+        LineLeft.setPosition(x+33,y+58);
+    }
+    void DrawNode(sf::RenderWindow &a)
+    {
+            a.draw((shape));
+            a.draw((text));
+            if(nodes[0])a.draw((LineLeft));
+            if(nodes[1])a.draw((LineRight));
     }
 };
 
 struct ArTree
 {
     ArNode* root;
-
-    ArTree()
+    sf::RenderWindow window;
+    ArTree():window(sf::VideoMode(900, 900), "Arbol Aritmetico!")
     {
+        window.setFramerateLimit(60);
         root = 0;
     }
     void InOrder(ArNode* n)
@@ -89,6 +96,7 @@ struct ArTree
             if(q.front()->nodes[0])q.push(q.front()->nodes[0]);
             if(q.front()->nodes[1])q.push(q.front()->nodes[1]);
             cout<<q.front()->value;
+            q.front()->DrawNode(window);
             q.pop();
         }
     }
@@ -108,10 +116,30 @@ struct ArTree
     }
     void Print()
     {   
-        Profundidad(root);
+        Profundidad(root) ;
         
         cout << endl;
     }   
+
+    void Draw()
+    {
+        while (window.isOpen())
+        {
+            
+        
+            sf::Event event;
+            while (window.pollEvent(event))
+            {
+                if (event.type == sf::Event::Closed)
+                    window.close();
+            }
+
+            window.clear();
+            Profundidad(root);
+            window.display();
+            
+        }
+    }
 };
 
 //---------------------------------------------Rellenar Arbol-----------------------------
@@ -169,65 +197,26 @@ string AsingRight(string a, int p)
     return returner;
 }
 //2+3
-string a1(string a,ArNode *&root)
+string a1(string a,ArNode *&root, int x, int y)
 {
     int tamanho = a.size();
     if(tamanho == 1)
     {
-        root = new ArNode(a[0]);
+        root = new ArNode(a[0], x , y);
         return a;
     }
     int i = SearchOp(a);
     string left = AsingLeft(a,i);
     string right = AsingRight(a,i);
 
-    root = new ArNode(a[i]);
-    a1(left,root->nodes[0]);
-    a1(right,root->nodes[1]);
+    root = new ArNode(a[i], x,y);
+    a1(left,root->nodes[0],x-50,y+50+50);
+    a1(right,root->nodes[1],x+50,y+50+50);
     return "xd"; 
 }
 
 //--------------------------------------SFML------------------------------------------
 
-struct DrawTree
-{
-    ArTree Tree;
-
-    DrawTree(ArTree Tree)
-    {
-        this->Tree = Tree;
-    }
-    void Draw()
-    {
-
-
-
-    
-        sf::RenderWindow window(sf::VideoMode(500, 500), "SFML works!");
-        window.setFramerateLimit(60);
-
-
-        while (window.isOpen())
-        {
-            
-        
-            sf::Event event;
-            while (window.pollEvent(event))
-            {
-                if (event.type == sf::Event::Closed)
-                    window.close();
-            }
-
-            window.clear();
-            window.draw(*(Tree.root->shape));
-            window.draw((Tree.root->text));
-            window.draw(*(Tree.root->LineLeft));
-            window.draw(*(Tree.root->LineRight));
-            window.display();
-            
-        }
-    } 
-};
 
 
 
